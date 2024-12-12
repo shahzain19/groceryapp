@@ -1,0 +1,39 @@
+import React, { useEffect } from "react";
+import { View, Text } from "react-native";
+import { useRoute } from "@react-navigation/native";
+
+const OrderPlaced = () => {
+  const route = useRoute();
+  const { orderId, products = [], address, totalAmount } = route.params || {}; // Default `products` to empty array
+
+  useEffect(() => {
+    if (orderId) {
+      console.log("Order ID:", orderId);
+      console.log("Products:", products);
+      console.log("Address:", address);
+      console.log("Total Amount:", totalAmount);
+    }
+  }, [orderId, products, address, totalAmount]);
+
+  return (
+    <View style={{ padding: 20 }}>
+      <Text>Order ID: {orderId}</Text>
+      <Text>Address: {address}</Text>
+      <Text>Total Amount: {totalAmount} RS</Text>
+
+      {/* Check if `products` exists and is an array */}
+      {Array.isArray(products) && products.length > 0 ? (
+        products.map((product, index) => (
+          <View key={index} style={{ marginBottom: 10 }}>
+            <Text>{product.name} - {product.quantity} x {product.price} RS</Text>
+            <Text>Total: {product.totalPrice} RS</Text>
+          </View>
+        ))
+      ) : (
+        <Text>No products in this order.</Text>
+      )}
+    </View>
+  );
+};
+
+export default OrderPlaced;
